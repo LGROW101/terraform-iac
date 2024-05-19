@@ -6,7 +6,7 @@ resource "tls_private_key" "key" {
 
 # Generate a Private Key and encode it as PEM.
 resource "aws_key_pair" "key_pair" {
-  key_name   = "key"
+  key_name   = "key1"
   public_key = tls_private_key.key.public_key_openssh
 
   provisioner "local-exec" {
@@ -16,11 +16,11 @@ resource "aws_key_pair" "key_pair" {
 
 # create nginx
 resource "aws_instance" "node" {
-  instance_type          = "t2.micro"
-  ami                    = "ami-003c463c8207b4dfa"
-  key_name               = aws_key_pair.key_pair.id
-  vpc_security_group_ids = [aws_security_group.secgroup.id]
-  subnet_id              = "subnet-071c2bdcba1b1fc53"
+  instance_type               = "t2.micro"
+  ami                         = "ami-003c463c8207b4dfa"
+  key_name                    = aws_key_pair.key_pair.id
+  vpc_security_group_ids      = [aws_security_group.secgroup.id]
+  subnet_id                   = "subnet-071c2bdcba1b1fc53"
   associate_public_ip_address = "true"
 
   root_block_device {
@@ -33,7 +33,7 @@ resource "aws_instance" "node" {
     user        = "ubuntu"
     private_key = tls_private_key.key.private_key_pem
   }
-  
+
   provisioner "remote-exec" {
     inline = [
       "sudo apt update -y",
