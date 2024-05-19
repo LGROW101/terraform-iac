@@ -1,2 +1,3 @@
 .terraform
-.key.pem
+key.pem
+.terraform.lock.hcl
